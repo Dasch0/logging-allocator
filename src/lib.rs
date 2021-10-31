@@ -70,7 +70,7 @@ where
         let ptr = self.allocator.alloc(layout);
         if self.logging_enabled() {
             run_guarded(|| {
-                log::trace!("alloc {}", Fmt(ptr, layout.size(), layout.align()));
+                log::error!("alloc {}", Fmt(ptr, layout.size(), layout.align()));
             });
         }
         ptr
@@ -79,7 +79,7 @@ where
     unsafe fn dealloc(&self, ptr: *mut u8, layout: Layout) {
         self.allocator.dealloc(ptr, layout);
         if self.logging_enabled() {
-            run_guarded(|| log::trace!("dealloc {}", Fmt(ptr, layout.size(), layout.align()),));
+            run_guarded(|| log::error!("dealloc {}", Fmt(ptr, layout.size(), layout.align()),));
         }
     }
 
@@ -87,7 +87,7 @@ where
         let ptr = self.allocator.alloc_zeroed(layout);
         if self.logging_enabled() {
             run_guarded(|| {
-                log::trace!("alloc_zeroed {}", Fmt(ptr, layout.size(), layout.align()));
+                log::error!("alloc_zeroed {}", Fmt(ptr, layout.size(), layout.align()));
             });
         }
         ptr
@@ -103,7 +103,7 @@ where
         let new_ptr = self.allocator.realloc(ptr, layout, new_size);
         if self.logging_enabled() {
             run_guarded(|| {
-                log::trace!(
+                log::error!(
                     "realloc {} to {}",
                     Fmt(ptr, layout.size(), layout.align()),
                     Fmt(new_ptr, new_size, layout.align())
